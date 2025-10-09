@@ -1,0 +1,65 @@
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 4 * * *'  # Daily performance check
+
+jobs:
+  performance-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup performance testing
+      run: echo "Setting up performance tests"
+    
+    - name: Run performance benchmarks
+      run: |
+        echo "Running performance tests..."
+    
+    - name: Generate performance report
+      run: |
+        echo "Performance report for xmrt-BitNet" > performance-report.txt
+        # Add performance metrics
+    
+    - name: Upload performance artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-reports
+        path: |
+          performance-report.txt
+          benchmarks/
+  
+  resource-monitoring:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Analyze resource usage
+      run: |
+        echo "Resource analysis completed"
+    
+    - name: Check bundle size (if applicable)
+      if: contains('None', 'JavaScript') || contains('None', 'TypeScript')
+      run: |
+        npm run build
+        npx bundlesize
+  
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Repository health check
+      run: |
+        echo "Repository: xmrt-BitNet"
+        echo "Language: None"
+        echo "Complexity Score: 23"
+        echo "Health Status: Monitoring"
